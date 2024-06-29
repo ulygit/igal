@@ -2,11 +2,29 @@
 
 from flask import Flask, request, jsonify, send_from_directory, render_template
 import os
+import yaml
 from werkzeug.utils import secure_filename
 
+def load_config():
+    config = {
+        'UPLOADED_PHOTOS_DEST': 'uploads',
+        'MAX_CONTENT_LENGTH': 16 * 1024 * 1024,  # 16 MB
+        'HOST': '127.0.0.1',
+        'PORT': 8080
+    }
+    
+    if os.path.exists('config.yaml'):
+        with open('config.yaml', 'r') as f:
+            yaml_config = yaml.safe_load(f)
+            config.update(yaml_config)
+    
+    return config
+
+config = load_config()
+
 app = Flask(__name__, static_folder='static')
-app.config['UPLOADED_PHOTOS_DEST'] = 'uploads'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Set maximum file size to 16 MB
+app.config['UPLOADED_PHOTOS_DEST'] = config['UPLOADED_PHOTOS_DEST']
+app.config['MAX_CONTENT_LENGTH'] = config['MAX_CONTENT_LENGTH']
 
 @app.route('/')
 def index():
@@ -55,4 +73,4 @@ def gallery(subdirectory):
 if __name__ == '__main__':
     if not os.path.exists(app.config['UPLOADED_PHOTOS_DEST']):
         os.makedirs(app.config['UPLOADED_PHOTOS_DEST'])
-    app.run(host='0.0.0.0', port=17305, debug=True)
+    app.run(host=config['HOST'], port=config['PORT'], debug=True)
