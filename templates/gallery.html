@@ -4,18 +4,80 @@
   <title>Photo Gallery</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css" integrity="sha512-za6IYQz7tR0pzniM/EAkgjV1gf1kWMlVJHBHavKIvsNoUMKWU99ZHzvL6lIobjiE2yKDAKMDSSmcMAxoiWgoWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <style>
+    .image-container {
+      display: inline-block;
+      margin: 5px;
+      position: relative;
+    }
+    .image-checkbox {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 20px;
+      height: 20px;
+    }
+    #download-selected {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #download-selected:disabled {
+      background-color: #cccccc;
+    }
+  </style>
 </head>
 <body>
   <div id="gallery">
     {% for file in files %}
-      <img src="{{ url_for('serve_image', subdirectory=subdirectory, filename=file) }}" style="width:300px; height:auto" />
+      <div class="image-container">
+        <input type="checkbox" class="image-checkbox" data-filename="{{ file }}">
+        <img src="{{ url_for('serve_image', subdirectory=subdirectory, filename=file) }}" style="width:300px; height:auto" />
+      </div>
     {% endfor %}
   </div>
+
+  <button id="download-selected" disabled>Download Selected</button>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js" integrity="sha512-EC3CQ+2OkM+ZKsM1dbFAB6OGEPKRxi6EDRnZW9ys8LghQRAq6cXPUgXCCujmDrXdodGXX9bqaaCRtwj4h4wgSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
     const gallery = document.getElementById('gallery');
     const viewer = new Viewer(gallery);
+
+    const checkboxes = document.querySelectorAll('.image-checkbox');
+    const downloadButton = document.getElementById('download-selected');
+
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', updateDownloadButton);
+    });
+
+    function updateDownloadButton() {
+      const checkedBoxes = document.querySelectorAll('.image-checkbox:checked');
+      downloadButton.disabled = checkedBoxes.length === 0;
+    }
+
+    downloadButton.addEventListener('click', async () => {
+      const checkedBoxes = document.querySelectorAll('.image-checkbox:checked');
+      const zip = new JSZip();
+
+      for (const checkbox of checkedBoxes) {
+        const filename = checkbox.dataset.filename;
+        const response = await fetch("{{ url_for('serve_image', subdirectory=subdirectory, filename='') }}" + filename);
+        const blob = await response.blob();
+        zip.file(filename, blob);
+      }
+
+      const content = await zip.generateAsync({type: "blob"});
+      saveAs(content, "selected_images.zip");
+		});
   </script>
 </body>
 </html>
