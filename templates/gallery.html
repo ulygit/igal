@@ -19,15 +19,12 @@
       width: 20px;
       height: 20px;
     }
-    .fixed-bottom {
-      position: fixed;
-      bottom: 20px;
-      left: 0;
-      right: 0;
+    .action-buttons {
       display: flex;
-      justify-content: space-around;
+      justify-content: flex-end;
       padding: 10px;
       background-color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 20px;
     }
     .action-button {
       padding: 10px;
@@ -36,6 +33,7 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      margin-left: 10px; /* Added margin to separate buttons */
     }
     .action-button:disabled {
       background-color: #cccccc;
@@ -51,6 +49,13 @@
   </style>
 </head>
 <body>
+
+  <div class="action-buttons">
+    <button id="select-all" class="action-button">Select All</button>
+    <button id="deselect-all" class="action-button">Deselect All</button>
+    <button id="download-selected" class="action-button" disabled>Download Selected</button>
+  </div>
+
   <div id="gallery">
     {% for file in files %}
       <div class="image-container">
@@ -58,12 +63,6 @@
         <img src="{{ url_for('serve_image', subdirectory=subdirectory, filename=file) }}" style="width:300px; height:auto" />
       </div>
     {% endfor %}
-  </div>
-
-  <div class="fixed-bottom">
-    <button id="select-all" class="action-button">Select All</button>
-    <button id="deselect-all" class="action-button">Deselect All</button>
-    <button id="download-selected" class="action-button" disabled>Download Selected</button>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js" integrity="sha512-EC3CQ+2OkM+ZKsM1dbFAB6OGEPKRxi6EDRnZW9ys8LghQRAq6cXPUgXCCujmDrXdodGXX9bqaaCRtwj4h4wgSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
