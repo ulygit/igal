@@ -26,9 +26,17 @@ app = Flask(__name__, static_folder='static')
 app.config['UPLOADED_PHOTOS_DEST'] = config['UPLOADED_PHOTOS_DEST']
 app.config['MAX_CONTENT_LENGTH'] = config['MAX_CONTENT_LENGTH']
 
+def get_version_id():
+    vcid_path = os.path.join(os.path.dirname(__file__), 'vcid')
+    if os.path.exists(vcid_path):
+        with open(vcid_path, 'r') as f:
+            return f.read().strip()
+    return 'Unknown'
+
 @app.route('/')
 def index():
-    return app.send_static_file('index.html')
+    version_id = get_version_id()
+    return render_template('index.html', version_id=version_id)
 
 @app.route('/check_subdirectory/<subdirectory>')
 def check_subdirectory(subdirectory):
@@ -74,7 +82,8 @@ def gallery(subdirectory):
 
     files = [f for f in os.listdir(upload_dir) if os.path.isfile(os.path.join(upload_dir, f))]
     files.sort()
-    return render_template('gallery.html', files=files, subdirectory=subdirectory)
+    version_id = get_version_id()
+    return render_template('gallery.html', files=files, subdirectory=subdirectory, version_id=version_id)
 
 if __name__ == '__main__':
     if not os.path.exists(app.config['UPLOADED_PHOTOS_DEST']):

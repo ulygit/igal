@@ -169,3 +169,5 @@ cython_debug/
 uploads/
 #  configuration file
 config.yaml
+#  version id
+vcid

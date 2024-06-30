@@ -61,6 +61,13 @@
           font-size: 14px;
         }
       }
+      .version-id {
+        position: fixed;
+        bottom: 5px;
+        right: 5px;
+        font-size: 12px;
+        color: #888;
+      }
     </style>
     <script>
       async function checkSubdirectory(subdirectory) {
@@ -225,5 +232,6 @@
     <div id="error"></div>
     <div id="progress"></div>
     <div id="gallery-link"></div>
+    <div class="version-id">Version: {{ version_id }}</div>
   </body>
 </html>

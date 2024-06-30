@@ -40,6 +40,14 @@
     .action-button:disabled {
       background-color: #cccccc;
     }
+    .version-id {
+      position: fixed;
+      bottom: 5px;
+      right: 5px;
+      font-size: 12px;
+      color: #888;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
@@ -106,6 +114,7 @@
       saveAs(content, "selected_images.zip");
     });
   </script>
+  <div class="version-id">Version: {{ version_id }}</div>
 </body>
 </html>
 
