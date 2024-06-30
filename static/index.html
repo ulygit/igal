@@ -35,15 +35,19 @@
         margin-bottom: 5px;
         font-size: 16px;
       }
-
-      #progress {
+      #progress, #error, #gallery-link {
         margin-top: 20px;
       }
 
       .progress-item {
         margin-bottom: 5px;
       }
-
+      #error {
+        color: red;
+      }
+      #gallery-link {
+        font-weight: bold;
+      }
       @media (max-width: 480px) {
         form {
           padding: 10px;
@@ -59,12 +63,36 @@
       }
     </style>
     <script>
-      function uploadFiles(event) {
+      async function checkSubdirectory(subdirectory) {
+        const response = await fetch(`/check_subdirectory/${subdirectory}`);
+        return response.json();
+      }
+
+      async function uploadFiles(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
         const uploadButton = document.getElementById('upload-button');
         const progressDiv = document.getElementById('progress');
+        const errorDiv = document.getElementById('error');
+        const galleryLinkDiv = document.getElementById('gallery-link');
         const stripMetadataCheckbox = document.getElementById('strip-metadata');
+        const subdirectory = formData.get('subdirectory');
+
+        // Clear progress, error, and gallery link texts
+        progressDiv.textContent = '';
+        errorDiv.textContent = '';
+        galleryLinkDiv.textContent = '';
+
+        if (!subdirectory) {
+          errorDiv.textContent = 'Please enter a subdirectory name.';
+          return;
+        }
+
+        const subdirectoryExists = await checkSubdirectory(subdirectory);
+        if (subdirectoryExists.exists) {
+          errorDiv.textContent = 'This subdirectory already exists. Please use a different name.';
+          return;
+        }
 
         uploadButton.disabled = true;
         progressDiv.textContent = 'Uploading...';
@@ -72,41 +100,34 @@
         const fileInput = document.getElementById('file-input');
         const files = fileInput.files;
 
-        uploadNextFile(files, 0, formData, stripMetadataCheckbox.checked);
+        try {
+          await uploadNextFile(files, 0, formData, stripMetadataCheckbox.checked);
+          progressDiv.textContent = 'Upload complete!';
+          galleryLinkDiv.innerHTML = `<a href="/i/${subdirectory}" target="_blank">View Gallery</a>`;
+        } catch (error) {
+          errorDiv.textContent = `Error: ${error.message}`;
+        } finally {
+          uploadButton.disabled = false;
+        }
       }
 
-      function uploadNextFile(files, index, formData, stripMetadata) {
+      async function uploadNextFile(files, index, formData, stripMetadata) {
         if (index >= files.length) {
-          document.getElementById('progress').textContent = 'Upload complete!';
-          document.getElementById('upload-button').disabled = false; // Enable the upload button
           return;
         }
 
         const file = files[index];
-        const fileEntry = formData.get('photos');
         const subdirectory = formData.get('subdirectory');
 
         if (stripMetadata) {
-          stripMetadataAndUpload(file, subdirectory, formData)
-            .then(() => {
-              const progressDiv = document.getElementById('progress');
-              progressDiv.textContent = `Uploaded ${file.name}`;
-              uploadNextFile(files, index + 1, formData, stripMetadata);
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
+          await stripMetadataAndUpload(file, subdirectory, formData);
         } else {
-          uploadFile(file, subdirectory, formData)
-            .then(() => {
-              const progressDiv = document.getElementById('progress');
-              progressDiv.textContent = `Uploaded ${file.name}`;
-              uploadNextFile(files, index + 1, formData, stripMetadata);
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
+          await uploadFile(file, subdirectory, formData);
         }
+
+        const progressDiv = document.getElementById('progress');
+        progressDiv.textContent = `Uploaded ${file.name}`;
+        await uploadNextFile(files, index + 1, formData, stripMetadata);
       }
 
       function stripMetadataAndUpload(file, subdirectory, formData) {
@@ -196,11 +217,13 @@
         Strip metadata
       </label>
       <br>
-      <label for="subdirectory">Subdirectory (optional):</label>
-      <input type="text" id="subdirectory" name="subdirectory">
+      <label for="subdirectory">Subdirectory (required):</label>
+      <input type="text" id="subdirectory" name="subdirectory" required>
       <br>
       <input type="submit" id="upload-button" value="Upload">
     </form>
+    <div id="error"></div>
     <div id="progress"></div>
+    <div id="gallery-link"></div>
   </body>
 </html>

@@ -30,6 +30,12 @@ app.config['MAX_CONTENT_LENGTH'] = config['MAX_CONTENT_LENGTH']
 def index():
     return app.send_static_file('index.html')
 
+@app.route('/check_subdirectory/<subdirectory>')
+def check_subdirectory(subdirectory):
+    upload_dir = os.path.join(app.config['UPLOADED_PHOTOS_DEST'], subdirectory)
+    exists = os.path.exists(upload_dir)
+    return jsonify({'exists': exists})
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'photo' not in request.files:
