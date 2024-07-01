@@ -60,7 +60,7 @@
     {% for file in files %}
       <div class="image-container">
         <input type="checkbox" class="image-checkbox" data-filename="{{ file }}">
-        <img src="{{ url_for('serve_image', subdirectory=subdirectory, filename=file) }}" style="width:300px; height:auto" />
+        <img src="{{ url_for('serve_image', gallery=gallery, filename=file) }}" style="width:300px; height:auto" />
       </div>
     {% endfor %}
   </div>
@@ -104,7 +104,7 @@
 
       for (const checkbox of checkedBoxes) {
         const filename = checkbox.dataset.filename;
-        const response = await fetch("{{ url_for('serve_image', subdirectory=subdirectory, filename='') }}" + filename);
+        const response = await fetch("{{ url_for('serve_image', gallery=gallery, filename='') }}" + filename);
         const blob = await response.blob();
         zip.file(filename, blob);
       }

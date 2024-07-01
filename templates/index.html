@@ -70,8 +70,8 @@
       }
     </style>
     <script>
-      async function checkSubdirectory(subdirectory) {
-        const response = await fetch(`/check_subdirectory/${subdirectory}`);
+      async function checkGallery(gallery) {
+        const response = await fetch(`/check_gallery/${gallery}`);
         return response.json();
       }
 
@@ -83,21 +83,21 @@
         const errorDiv = document.getElementById('error');
         const galleryLinkDiv = document.getElementById('gallery-link');
         const stripMetadataCheckbox = document.getElementById('strip-metadata');
-        const subdirectory = formData.get('subdirectory');
+        const gallery = formData.get('gallery');
 
         // Clear progress, error, and gallery link texts
         progressDiv.textContent = '';
         errorDiv.textContent = '';
         galleryLinkDiv.textContent = '';
 
-        if (!subdirectory) {
-          errorDiv.textContent = 'Please enter a subdirectory name.';
+        if (!gallery) {
+          errorDiv.textContent = 'Please enter a gallery name.';
           return;
         }
 
-        const subdirectoryExists = await checkSubdirectory(subdirectory);
-        if (subdirectoryExists.exists) {
-          errorDiv.textContent = 'This subdirectory already exists. Please use a different name.';
+        const galleryExists = await checkGallery(gallery);
+        if (galleryExists.exists) {
+          errorDiv.textContent = 'This gallery already exists. Please use a different name.';
           return;
         }
 
@@ -110,7 +110,7 @@
         try {
           await uploadNextFile(files, 0, formData, stripMetadataCheckbox.checked);
           progressDiv.textContent = 'Upload complete!';
-          galleryLinkDiv.innerHTML = `<a href="/i/${subdirectory}" target="_blank">View Gallery</a>`;
+          galleryLinkDiv.innerHTML = `<a href="/i/${gallery}" target="_blank">View Gallery</a>`;
         } catch (error) {
           errorDiv.textContent = `Error: ${error.message}`;
         } finally {
@@ -124,12 +124,12 @@
         }
 
         const file = files[index];
-        const subdirectory = formData.get('subdirectory');
+        const gallery = formData.get('gallery');
 
         if (stripMetadata) {
-          await stripMetadataAndUpload(file, subdirectory, formData);
+          await stripMetadataAndUpload(file, gallery, formData);
         } else {
-          await uploadFile(file, subdirectory, formData);
+          await uploadFile(file, gallery, formData);
         }
 
         const progressDiv = document.getElementById('progress');
@@ -137,7 +137,7 @@
         await uploadNextFile(files, index + 1, formData, stripMetadata);
       }
 
-      function stripMetadataAndUpload(file, subdirectory, formData) {
+      function stripMetadataAndUpload(file, gallery, formData) {
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = () => {
@@ -154,8 +154,8 @@
 
               const uploadFormData = new FormData();
               uploadFormData.append('photo', blobData, file.name);
-              if (subdirectory) {
-                uploadFormData.append('subdirectory', subdirectory);
+              if (gallery) {
+                uploadFormData.append('gallery', gallery);
               }
 
               fetch('/upload', {
@@ -177,12 +177,12 @@
         });
       }
 
-      function uploadFile(file, subdirectory, formData) {
+      function uploadFile(file, gallery, formData) {
         return new Promise((resolve, reject) => {
           const uploadFormData = new FormData();
           uploadFormData.append('photo', file, file.name);
-          if (subdirectory) {
-            uploadFormData.append('subdirectory', subdirectory);
+          if (gallery) {
+            uploadFormData.append('gallery', gallery);
           }
 
           fetch('/upload', {
@@ -220,12 +220,12 @@
       <input type="file" id="file-input" name="photos" accept="image/*" multiple required>
       <br>
       <label>
-        <input type="checkbox" id="strip-metadata" name="strip_metadata" value="true">
+        <input type="checkbox" id="strip-metadata" name="strip_metadata" value="true" checked>
         Strip metadata
       </label>
       <br>
-      <label for="subdirectory">Subdirectory (required):</label>
-      <input type="text" id="subdirectory" name="subdirectory" required>
+      <label for="gallery">Gallery name (required):</label>
+      <input type="text" id="gallery" name="gallery" required>
       <br>
       <input type="submit" id="upload-button" value="Upload">
     </form>

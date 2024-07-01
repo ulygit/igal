@@ -38,9 +38,9 @@ def index():
     version_id = get_version_id()
     return render_template('index.html', version_id=version_id)
 
-@app.route('/check_subdirectory/<subdirectory>')
-def check_subdirectory(subdirectory):
-    upload_dir = os.path.join(app.config['UPLOADED_PHOTOS_DEST'], subdirectory)
+@app.route('/check_gallery/<gallery>')
+def check_gallery(gallery):
+    upload_dir = os.path.join(app.config['UPLOADED_PHOTOS_DEST'], gallery)
     exists = os.path.exists(upload_dir)
     return jsonify({'exists': exists})
 
@@ -54,10 +54,10 @@ def upload_file():
     if file.filename == '':
         return jsonify({'status': 'error', 'message': 'No file selected'}), 400
 
-    subdirectory = request.form.get('subdirectory', '')
+    gallery = request.form.get('gallery', '')
 
-    if subdirectory:
-        upload_dir = os.path.join(app.config['UPLOADED_PHOTOS_DEST'], subdirectory)
+    if gallery:
+        upload_dir = os.path.join(app.config['UPLOADED_PHOTOS_DEST'], gallery)
         if not os.path.exists(upload_dir):
             os.makedirs(upload_dir)
     else:
@@ -69,21 +69,21 @@ def upload_file():
 
     return jsonify({'status': 'success', 'filename': filename})
 
-@app.route('/i/<subdirectory>/<filename>')
-def serve_image(subdirectory, filename):
-    upload_dir = os.path.join(app.config['UPLOADED_PHOTOS_DEST'], subdirectory)
+@app.route('/i/<gallery>/<filename>')
+def serve_image(gallery, filename):
+    upload_dir = os.path.join(app.config['UPLOADED_PHOTOS_DEST'], gallery)
     return send_from_directory(upload_dir, filename)
 
-@app.route('/i/<subdirectory>')
-def gallery(subdirectory):
-    upload_dir = os.path.join(app.config['UPLOADED_PHOTOS_DEST'], subdirectory)
+@app.route('/i/<gallery>')
+def gallery(gallery):
+    upload_dir = os.path.join(app.config['UPLOADED_PHOTOS_DEST'], gallery)
     if not os.path.exists(upload_dir):
-        return "Subdirectory not found", 404
+        return "Gallery not found", 404
 
     files = [f for f in os.listdir(upload_dir) if os.path.isfile(os.path.join(upload_dir, f))]
     files.sort()
     version_id = get_version_id()
-    return render_template('gallery.html', files=files, subdirectory=subdirectory, version_id=version_id)
+    return render_template('gallery.html', files=files, gallery=gallery, version_id=version_id)
 
 if __name__ == '__main__':
     if not os.path.exists(app.config['UPLOADED_PHOTOS_DEST']):
