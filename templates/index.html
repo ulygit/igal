@@ -1,72 +1,158 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Photo Upload</title>
+    <title>pantr - fast photo sharing</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
       body {
         font-family: Arial, sans-serif;
         margin: 20px;
+        background-color: #1a1a1a;
+        color: #e0e0e0;
+        font-size: 20px;
       }
 
       h1 {
         text-align: center;
+        font-size: 40px;
+				margin-bottom: 0px;
+      }
+
+      h2 {
+        text-align: center;
+        font-size: 14px;
       }
 
       form {
-        max-width: 500px;
+        max-width: 625px;
         margin: 0 auto;
-        padding: 20px;
-        background-color: #f2f2f2;
+        padding: 25px;
+        background-color: #2a2a2a;
         border-radius: 5px;
       }
 
-      input[type="file"], input[type="text"], input[type="submit"] {
+      input[type="text"] {
         display: block;
         width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
+        padding: 12.5px;
+        margin-bottom: 12.5px;
         box-sizing: border-box;
-        font-size: 16px;
+        font-size: 20px;
+        background-color: #3a3a3a;
+        color: #e0e0e0;
+        border: 1px solid #4a4a4a;
+      }
+
+      input[type="submit"] {
+        display: block;
+        width: auto;
+        padding: 12.5px 25px;
+        margin: 20px auto 0;
+        font-size: 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+
+      input[type="submit"]:disabled {
+        background-color: #444444;
+        cursor: not-allowed;
       }
 
       label {
         display: block;
-        margin-bottom: 5px;
-        font-size: 16px;
+        margin-bottom: 6.25px;
+        font-size: 20px;
       }
       #progress, #error, #gallery-link {
-        margin-top: 20px;
+        margin-top: 25px;
       }
 
       .progress-item {
-        margin-bottom: 5px;
+        margin-bottom: 6.25px;
       }
       #error {
-        color: red;
+        color: #ff6b6b;
       }
       #gallery-link {
         font-weight: bold;
       }
+
+      #gallery-link a {
+        color: #4da6ff;
+      }
+
+      .version-id {
+        position: fixed;
+        bottom: 6.25px;
+        right: 6.25px;
+        font-size: 12px;
+        color: #888;
+      }
+      input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+      }
+      .file-input-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        background-color: #3a3a3a;
+        border: 2px dashed #4a4a4a;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .file-input-wrapper:hover {
+        background-color: #4a4a4a;
+      }
+
+      .file-input-wrapper input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .file-input-icon {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 10px;
+      }
+
+      .file-input-text {
+        font-size: 18px;
+        color: #e0e0e0;
+      }
+
       @media (max-width: 480px) {
         form {
-          padding: 10px;
+          padding: 12.5px;
         }
 
-        input[type="file"], input[type="text"], input[type="submit"] {
-          font-size: 14px;
+        input[type="text"], input[type="submit"] {
+          font-size: 17.5px;
         }
 
         label {
-          font-size: 14px;
+          font-size: 17.5px;
         }
-      }
-      .version-id {
-        position: fixed;
-        bottom: 5px;
-        right: 5px;
-        font-size: 12px;
-        color: #888;
+
+        .file-input-text {
+          font-size: 16px;
+        }
       }
     </style>
     <script>
@@ -214,14 +300,18 @@
     </script>
   </head>
   <body>
-    <h1>Upload Photos</h1>
+		<h1>pantr</h1>
+		<h2>fast photo sharing</h2>
     <form onsubmit="uploadFiles(event)">
-      <label for="file-input">Select files:</label>
-      <input type="file" id="file-input" name="photos" accept="image/*" multiple required>
+      <div class="file-input-wrapper">
+        <input type="file" id="file-input" name="photos" accept="image/*" multiple required>
+        <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPgo8c3ZnIGhlaWdodD0iODAwcHgiIHdpZHRoPSI4MDBweCIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiAKCSB2aWV3Qm94PSIwIDAgMTg0LjY5IDE4NC42OSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPGc+CgkJPGc+CgkJCTxwYXRoIHN0eWxlPSJmaWxsOiMwMDdiZmY7IiBkPSJNMTQ5Ljk2OCw1MC4xODZjLTguMDE3LTE0LjMwOC0yMy43OTYtMjIuNTE1LTQwLjcxNy0xOS44MTMKCQkJCUMxMDIuNjA5LDE2LjQzLDg4LjcxMyw3LjU3Niw3My4wODcsNy41NzZjLTIyLjExNywwLTQwLjExMiwxNy45OTQtNDAuMTEyLDQwLjExNWMwLDAuOTEzLDAuMDM2LDEuODU0LDAuMTE4LDIuODM0CgkJCQlDMTQuMDA0LDU0Ljg3NSwwLDcyLjExLDAsOTEuOTU5YzAsMjMuNDU2LDE5LjA4Miw0Mi41MzUsNDIuNTM4LDQyLjUzNWgzMy42MjN2LTcuMDI1SDQyLjUzOAoJCQkJYy0xOS41ODMsMC0zNS41MDktMTUuOTI5LTM1LjUwOS0zNS41MDljMC0xNy41MjYsMTMuMDg0LTMyLjYyMSwzMC40NDItMzUuMTA1YzAuOTMxLTAuMTMyLDEuNzY4LTAuNjMzLDIuMzI2LTEuMzkyCgkJCQljMC41NTUtMC43NTUsMC43OTUtMS43MDQsMC42NDQtMi42M2MtMC4yOTctMS45MDQtMC40NDctMy41ODItMC40NDctNS4xMzljMC0xOC4yNDksMTQuODUyLTMzLjA5NCwzMy4wOTQtMzMuMDk0CgkJCQljMTMuNzAzLDAsMjUuNzg5LDguMjYsMzAuODAzLDIxLjA0YzAuNjMsMS42MjEsMi4zNTEsMi41MzQsNC4wNTgsMi4xNGMxNS40MjUtMy41NjgsMjkuOTE5LDMuODgzLDM2LjYwNCwxNy4xNjgKCQkJCWMwLjUwOCwxLjAyNywxLjUwMywxLjczNiwyLjY0MSwxLjg5N2MxNy4zNjgsMi40NzMsMzAuNDgxLDE3LjU2OSwzMC40ODEsMzUuMTEyYzAsMTkuNTgtMTUuOTM3LDM1LjUwOS0zNS41MiwzNS41MDlIOTcuMzkxCgkJCQl2Ny4wMjVoNDQuNzYxYzIzLjQ1OSwwLDQyLjUzOC0xOS4wNzksNDIuNTM4LTQyLjUzNUMxODQuNjksNzEuNTQ1LDE2OS44ODQsNTMuOTAxLDE0OS45NjgsNTAuMTg2eiIvPgoJCTwvZz4KCQk8Zz4KCQkJPHBhdGggc3R5bGU9ImZpbGw6IzAwN2JmZjsiIGQ9Ik0xMDguNTg2LDkwLjIwMWMxLjQwNi0xLjQwMywxLjQwNi0zLjY3MiwwLTUuMDc1TDg4LjU0MSw2NS4wNzgKCQkJCWMtMC43MDEtMC42OTgtMS42MTQtMS4wNDUtMi41MzQtMS4wNDVsLTAuMDY0LDAuMDExYy0wLjAxOCwwLTAuMDM2LTAuMDExLTAuMDU0LTAuMDExYy0wLjkzMSwwLTEuODUsMC4zNjEtMi41MzQsMS4wNDUKCQkJCUw2My4zMSw4NS4xMjdjLTEuNDAzLDEuNDAzLTEuNDAzLDMuNjcyLDAsNS4wNzVjMS40MDMsMS40MDYsMy42NzIsMS40MDYsNS4wNzUsMEw4Mi4yOTYsNzYuMjl2OTcuMjI3CgkJCQljMCwxLjk5LDEuNjAzLDMuNTk3LDMuNTkzLDMuNTk3YzEuOTc5LDAsMy41OS0xLjYwNywzLjU5LTMuNTk3Vjc2LjE2NWwxNC4wMzMsMTQuMDM2CgkJCQlDMTA0LjkxLDkxLjYwOCwxMDcuMTgzLDkxLjYwOCwxMDguNTg2LDkwLjIwMXoiLz4KCQk8L2c+Cgk8L2c+CjwvZz4KPC9zdmc+Cg==" alt="Upload icon" class="file-input-icon">
+        <div class="file-input-text">Click to choose files</div>
+      </div>
       <br>
       <label>
         <input type="checkbox" id="strip-metadata" name="strip_metadata" value="true" checked>
-        Strip metadata
+        Remove hidden information (e.g. location data and camera settings)
       </label>
       <br>
       <label for="gallery">Gallery name (required):</label>
@@ -232,6 +322,6 @@
     <div id="error"></div>
     <div id="progress"></div>
     <div id="gallery-link"></div>
-    <div class="version-id">Version: {{ version_id }}</div>
+    <div class="version-id">version: {{ version_id }}</div>
   </body>
 </html>

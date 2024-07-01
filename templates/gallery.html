@@ -7,44 +7,56 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <style>
+    body {
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+      font-size: 20px; /* 25% larger than default */
+    }
+
     .image-container {
       display: inline-block;
-      margin: 5px;
+      margin: 6.25px;
       position: relative;
     }
     .image-checkbox {
       position: absolute;
-      top: 5px;
-      left: 5px;
-      width: 20px;
-      height: 20px;
+      top: 6.25px;
+      left: 6.25px;
+      width: 25px;
+      height: 25px;
     }
     .action-buttons {
       display: flex;
       justify-content: flex-end;
-      padding: 10px;
-      background-color: rgba(255, 255, 255, 0.8);
-      margin-bottom: 20px;
+      padding: 12.5px;
+      background-color: rgba(42, 42, 42, 0.8);
+      margin-bottom: 25px;
     }
     .action-button {
-      padding: 10px;
+      padding: 12.5px;
       background-color: #007bff;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      margin-left: 10px; /* Added margin to separate buttons */
+      margin-left: 12.5px;
+      font-size: 20px;
     }
     .action-button:disabled {
-      background-color: #cccccc;
+      background-color: #444444;
     }
     .version-id {
       position: fixed;
-      bottom: 5px;
-      right: 5px;
-      font-size: 12px;
+      bottom: 6.25px;
+      right: 6.25px;
+      font-size: 15px;
       color: #888;
       z-index: 1000;
+    }
+
+    #gallery img {
+      width: 375px; /* 25% larger than original 300px */
+      height: auto;
     }
   </style>
 </head>
