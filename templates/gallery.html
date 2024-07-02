@@ -6,59 +6,64 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css" integrity="sha512-za6IYQz7tR0pzniM/EAkgjV1gf1kWMlVJHBHavKIvsNoUMKWU99ZHzvL6lIobjiE2yKDAKMDSSmcMAxoiWgoWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-  <style>
-    body {
-      background-color: #1a1a1a;
-      color: #e0e0e0;
-      font-size: 20px; /* 25% larger than default */
-    }
+<style>
+  body {
+    background-color: #E3D8CF;
+    color: #334E60;
+    font-size: 20px;
+  }
 
-    .image-container {
-      display: inline-block;
-      margin: 6.25px;
-      position: relative;
-    }
-    .image-checkbox {
-      position: absolute;
-      top: 6.25px;
-      left: 6.25px;
-      width: 25px;
-      height: 25px;
-    }
-    .action-buttons {
-      display: flex;
-      justify-content: flex-end;
-      padding: 12.5px;
-      background-color: rgba(42, 42, 42, 0.8);
-      margin-bottom: 25px;
-    }
-    .action-button {
-      padding: 12.5px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-left: 12.5px;
-      font-size: 20px;
-    }
-    .action-button:disabled {
-      background-color: #444444;
-    }
-    .version-id {
-      position: fixed;
-      bottom: 6.25px;
-      right: 6.25px;
-      font-size: 15px;
-      color: #888;
-      z-index: 1000;
-    }
+  .image-container {
+    display: inline-block;
+    margin: 6.25px;
+    position: relative;
+  }
 
-    #gallery img {
-      width: 375px; /* 25% larger than original 300px */
-      height: auto;
-    }
-  </style>
+  .image-checkbox {
+    position: absolute;
+    top: 6.25px;
+    left: 6.25px;
+    width: 25px;
+    height: 25px;
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12.5px;
+    background-color: rgba(198, 166, 128, 0.8);
+    margin-bottom: 25px;
+  }
+
+  .action-button {
+    padding: 12.5px;
+    background-color: #334E60;
+    color: #E3D8CF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 12.5px;
+    font-size: 20px;
+  }
+
+  .action-button:disabled {
+    background-color: #817056;
+  }
+
+  .version-id {
+    position: fixed;
+    bottom: 6.25px;
+    right: 6.25px;
+    font-size: 15px;
+    color: #817056;
+    z-index: 1000;
+  }
+
+  #gallery img {
+    width: 375px;
+    height: auto;
+  }
+</style>
 </head>
 <body>
 

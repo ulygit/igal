@@ -3,158 +3,167 @@
   <head>
     <title>pantr - fast photo sharing</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: #1a1a1a;
-        color: #e0e0e0;
-        font-size: 20px;
-      }
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #342e21;
+    color: #E3D8CF;
+    font-size: 20px;
+  }
 
-      h1 {
-        text-align: center;
-        font-size: 40px;
-				margin-bottom: 0px;
-      }
+  h1 {
+    text-align: center;
+    font-size: 60px;
+    margin-bottom: 0px;
+    color: #C6A680;
+  }
 
-      h2 {
-        text-align: center;
-        font-size: 14px;
-      }
+  h2 {
+    text-align: center;
+    font-size: 14px;
+    color: #817056;
+  }
 
-      form {
-        max-width: 625px;
-        margin: 0 auto;
-        padding: 25px;
-        background-color: #2a2a2a;
-        border-radius: 5px;
-      }
+  form {
+    max-width: 625px;
+    margin: 0 auto;
+    padding: 25px;
+    border-radius: 5px;
+  }
 
-      input[type="text"] {
-        display: block;
-        width: 100%;
-        padding: 12.5px;
-        margin-bottom: 12.5px;
-        box-sizing: border-box;
-        font-size: 20px;
-        background-color: #3a3a3a;
-        color: #e0e0e0;
-        border: 1px solid #4a4a4a;
-      }
+  input[type="text"] {
+    display: block;
+    width: 100%;
+    padding: 12.5px;
+    margin-bottom: 12.5px;
+    box-sizing: border-box;
+    font-size: 20px;
+    background-color: #765F41;
+    color: #E3D8CF;
+    border: 1px solid #817056;
+  }
 
-      input[type="submit"] {
-        display: block;
-        width: auto;
-        padding: 12.5px 25px;
-        margin: 20px auto 0;
-        font-size: 20px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
+  input[type="submit"] {
+    display: block;
+    width: auto;
+    padding: 12.5px 25px;
+    margin: 20px auto 0;
+    font-size: 20px;
+    background-color: #C6A680;
+    color: #334E60;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 
-      input[type="submit"]:hover {
-        background-color: #0056b3;
-      }
+  input[type="submit"]:hover {
+    background-color: #E3D8CF;
+  }
 
-      input[type="submit"]:disabled {
-        background-color: #444444;
-        cursor: not-allowed;
-      }
+  input[type="submit"]:disabled {
+    background-color: #765F41;
+    color: #817056;
+    cursor: not-allowed;
+  }
 
-      label {
-        display: block;
-        margin-bottom: 6.25px;
-        font-size: 20px;
-      }
-      #progress, #error, #gallery-link {
-        margin-top: 25px;
-      }
+  label {
+    display: block;
+    margin-bottom: 6.25px;
+    font-size: 20px;
+    color: #C6A680;
+  }
 
-      .progress-item {
-        margin-bottom: 6.25px;
-      }
-      #error {
-        color: #ff6b6b;
-      }
-      #gallery-link {
-        font-weight: bold;
-      }
+  #progress, #error, #gallery-link {
+    margin-top: 25px;
+  }
 
-      #gallery-link a {
-        color: #4da6ff;
-      }
+  .progress-item {
+    margin-bottom: 6.25px;
+  }
 
-      .version-id {
-        position: fixed;
-        bottom: 6.25px;
-        right: 6.25px;
-        font-size: 12px;
-        color: #888;
-      }
-      input[type="checkbox"] {
-        width: 20px;
-        height: 20px;
-      }
-      .file-input-wrapper {
-        position: relative;
-        overflow: hidden;
-        display: inline-block;
-        background-color: #3a3a3a;
-        border: 2px dashed #4a4a4a;
-        border-radius: 5px;
-        padding: 20px;
-        text-align: center;
-        cursor: pointer;
-        width: 100%;
-        box-sizing: border-box;
-      }
+  #error {
+    color: #C6A680;
+  }
 
-      .file-input-wrapper:hover {
-        background-color: #4a4a4a;
-      }
+  #gallery-link {
+    font-weight: bold;
+  }
 
-      .file-input-wrapper input[type=file] {
-        font-size: 100px;
-        position: absolute;
-        left: 0;
-        top: 0;
-        opacity: 0;
-        cursor: pointer;
-      }
+  #gallery-link a {
+    color: #C6A680;
+  }
 
-      .file-input-icon {
-        width: 64px;
-        height: 64px;
-        margin-bottom: 10px;
-      }
+  .version-id {
+    position: fixed;
+    bottom: 6.25px;
+    right: 6.25px;
+    font-size: 12px;
+    color: #817056;
+  }
 
-      .file-input-text {
-        font-size: 18px;
-        color: #e0e0e0;
-      }
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
 
-      @media (max-width: 480px) {
-        form {
-          padding: 12.5px;
-        }
+  .file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    background-color: #765F41;
+    border: 2px dashed #C6A680;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+  }
 
-        input[type="text"], input[type="submit"] {
-          font-size: 17.5px;
-        }
+  .file-input-wrapper:hover {
+    background-color: #817056;
+  }
 
-        label {
-          font-size: 17.5px;
-        }
+  .file-input-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
 
-        .file-input-text {
-          font-size: 16px;
-        }
-      }
-    </style>
+  .file-input-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 10px;
+    filter: invert(1);
+  }
+
+  .file-input-text {
+    font-size: 18px;
+    color: #E3D8CF;
+  }
+
+  @media (max-width: 480px) {
+    form {
+      padding: 12.5px;
+    }
+
+    input[type="text"], input[type="submit"] {
+      font-size: 17.5px;
+    }
+
+    label {
+      font-size: 17.5px;
+    }
+
+    .file-input-text {
+      font-size: 16px;
+    }
+  }
+</style>
     <script>
       async function checkGallery(gallery) {
         const response = await fetch(`/check_gallery/${gallery}`);
