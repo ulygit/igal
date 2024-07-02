@@ -8,8 +8,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <style>
   body {
-    background-color: #E3D8CF;
-    color: #334E60;
+    background-color: #241d17;
+    color: #E3D8CF;
     font-size: 20px;
   }
 
@@ -31,14 +31,14 @@
     display: flex;
     justify-content: flex-end;
     padding: 12.5px;
-    background-color: rgba(198, 166, 128, 0.8);
+    background-color: #241d17;
     margin-bottom: 25px;
   }
 
   .action-button {
     padding: 12.5px;
-    background-color: #334E60;
-    color: #E3D8CF;
+    background-color: #007bff;
+    color: #ddd;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -46,8 +46,14 @@
     font-size: 20px;
   }
 
+  .action-button:hover {
+    background-color: #e3d8cf;
+  }
+
   .action-button:disabled {
-    background-color: #817056;
+    background-color: #765F41;
+    color: #817056;
+    cursor: not-allowed;
   }
 
   .version-id {

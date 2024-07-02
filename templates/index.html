@@ -7,7 +7,7 @@
   body {
     font-family: Arial, sans-serif;
     margin: 20px;
-    background-color: #342e21;
+    background-color: #241d17;
     color: #E3D8CF;
     font-size: 20px;
   }
@@ -50,8 +50,8 @@
     padding: 12.5px 25px;
     margin: 20px auto 0;
     font-size: 20px;
-    background-color: #C6A680;
-    color: #334E60;
+    background-color: #007bff;
+    color: #DDD;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -138,13 +138,40 @@
     width: 64px;
     height: 64px;
     margin-bottom: 10px;
-    filter: invert(1);
   }
 
   .file-input-text {
     font-size: 18px;
     color: #E3D8CF;
   }
+
+.selected-images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.selected-image-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  margin: 5px;
+  border: 2px solid #C6A680;
+}
+
+.additional-images-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background-color: #C6A680;
+  color: #334E60;
+  font-weight: bold;
+  margin: 5px;
+  border-radius: 5px;
+}
 
   @media (max-width: 480px) {
     form {
@@ -316,11 +343,12 @@
         <input type="file" id="file-input" name="photos" accept="image/*" multiple required>
         <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPgo8c3ZnIGhlaWdodD0iODAwcHgiIHdpZHRoPSI4MDBweCIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiAKCSB2aWV3Qm94PSIwIDAgMTg0LjY5IDE4NC42OSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPGc+CgkJPGc+CgkJCTxwYXRoIHN0eWxlPSJmaWxsOiMwMDdiZmY7IiBkPSJNMTQ5Ljk2OCw1MC4xODZjLTguMDE3LTE0LjMwOC0yMy43OTYtMjIuNTE1LTQwLjcxNy0xOS44MTMKCQkJCUMxMDIuNjA5LDE2LjQzLDg4LjcxMyw3LjU3Niw3My4wODcsNy41NzZjLTIyLjExNywwLTQwLjExMiwxNy45OTQtNDAuMTEyLDQwLjExNWMwLDAuOTEzLDAuMDM2LDEuODU0LDAuMTE4LDIuODM0CgkJCQlDMTQuMDA0LDU0Ljg3NSwwLDcyLjExLDAsOTEuOTU5YzAsMjMuNDU2LDE5LjA4Miw0Mi41MzUsNDIuNTM4LDQyLjUzNWgzMy42MjN2LTcuMDI1SDQyLjUzOAoJCQkJYy0xOS41ODMsMC0zNS41MDktMTUuOTI5LTM1LjUwOS0zNS41MDljMC0xNy41MjYsMTMuMDg0LTMyLjYyMSwzMC40NDItMzUuMTA1YzAuOTMxLTAuMTMyLDEuNzY4LTAuNjMzLDIuMzI2LTEuMzkyCgkJCQljMC41NTUtMC43NTUsMC43OTUtMS43MDQsMC42NDQtMi42M2MtMC4yOTctMS45MDQtMC40NDctMy41ODItMC40NDctNS4xMzljMC0xOC4yNDksMTQuODUyLTMzLjA5NCwzMy4wOTQtMzMuMDk0CgkJCQljMTMuNzAzLDAsMjUuNzg5LDguMjYsMzAuODAzLDIxLjA0YzAuNjMsMS42MjEsMi4zNTEsMi41MzQsNC4wNTgsMi4xNGMxNS40MjUtMy41NjgsMjkuOTE5LDMuODgzLDM2LjYwNCwxNy4xNjgKCQkJCWMwLjUwOCwxLjAyNywxLjUwMywxLjczNiwyLjY0MSwxLjg5N2MxNy4zNjgsMi40NzMsMzAuNDgxLDE3LjU2OSwzMC40ODEsMzUuMTEyYzAsMTkuNTgtMTUuOTM3LDM1LjUwOS0zNS41MiwzNS41MDlIOTcuMzkxCgkJCQl2Ny4wMjVoNDQuNzYxYzIzLjQ1OSwwLDQyLjUzOC0xOS4wNzksNDIuNTM4LTQyLjUzNUMxODQuNjksNzEuNTQ1LDE2OS44ODQsNTMuOTAxLDE0OS45NjgsNTAuMTg2eiIvPgoJCTwvZz4KCQk8Zz4KCQkJPHBhdGggc3R5bGU9ImZpbGw6IzAwN2JmZjsiIGQ9Ik0xMDguNTg2LDkwLjIwMWMxLjQwNi0xLjQwMywxLjQwNi0zLjY3MiwwLTUuMDc1TDg4LjU0MSw2NS4wNzgKCQkJCWMtMC43MDEtMC42OTgtMS42MTQtMS4wNDUtMi41MzQtMS4wNDVsLTAuMDY0LDAuMDExYy0wLjAxOCwwLTAuMDM2LTAuMDExLTAuMDU0LTAuMDExYy0wLjkzMSwwLTEuODUsMC4zNjEtMi41MzQsMS4wNDUKCQkJCUw2My4zMSw4NS4xMjdjLTEuNDAzLDEuNDAzLTEuNDAzLDMuNjcyLDAsNS4wNzVjMS40MDMsMS40MDYsMy42NzIsMS40MDYsNS4wNzUsMEw4Mi4yOTYsNzYuMjl2OTcuMjI3CgkJCQljMCwxLjk5LDEuNjAzLDMuNTk3LDMuNTkzLDMuNTk3YzEuOTc5LDAsMy41OS0xLjYwNywzLjU5LTMuNTk3Vjc2LjE2NWwxNC4wMzMsMTQuMDM2CgkJCQlDMTA0LjkxLDkxLjYwOCwxMDcuMTgzLDkxLjYwOCwxMDguNTg2LDkwLjIwMXoiLz4KCQk8L2c+Cgk8L2c+CjwvZz4KPC9zdmc+Cg==" alt="Upload icon" class="file-input-icon">
         <div class="file-input-text">Click to choose files</div>
+        <div id="selected-images" class="selected-images"></div>
       </div>
       <br>
       <label>
         <input type="checkbox" id="strip-metadata" name="strip_metadata" value="true" checked>
-        Remove hidden information (e.g. location data and camera settings)
+        Remove hidden information (e.g. location)
       </label>
       <br>
       <label for="gallery">Gallery name (required):</label>
@@ -333,4 +361,44 @@
     <div id="gallery-link"></div>
     <div class="version-id">version: {{ version_id }}</div>
   </body>
+
+  <script>
+      function handleFileSelect(event) {
+        const files = event.target.files;
+        const selectedImagesDiv = document.getElementById('selected-images');
+        selectedImagesDiv.innerHTML = '';
+
+        if (files.length > 0) {
+          const thumbnailSize = 74; // 60px + 5px margin on each side + 2px border on each side
+          const containerWidth = selectedImagesDiv.offsetWidth;
+          const maxThumbnails = Math.floor(containerWidth / thumbnailSize);
+					const imagesToDisplay = files.length <= maxThumbnails ? files.length : maxThumbnails - 1;
+
+          for (let i = 0; i < imagesToDisplay; i++) {
+            const file = files[i];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+              const img = document.createElement('img');
+              img.src = e.target.result;
+              img.classList.add('selected-image-thumbnail');
+              selectedImagesDiv.appendChild(img);
+            }
+
+            reader.readAsDataURL(file);
+          }
+
+          if (files.length > imagesToDisplay) {
+            const additionalCount = document.createElement('div');
+            additionalCount.classList.add('additional-images-count');
+            additionalCount.textContent = `+${files.length - imagesToDisplay}`;
+            selectedImagesDiv.appendChild(additionalCount);
+          }
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('file-input').addEventListener('change', handleFileSelect);
+      });
+  </script>
 </html>
