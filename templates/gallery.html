@@ -3,15 +3,25 @@
 <head>
   <title>Photo Gallery</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}" type="text/css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css" integrity="sha512-za6IYQz7tR0pzniM/EAkgjV1gf1kWMlVJHBHavKIvsNoUMKWU99ZHzvL6lIobjiE2yKDAKMDSSmcMAxoiWgoWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <style>
-  body {
-    background-color: #241d17;
-    color: #E3D8CF;
-    font-size: 20px;
+  #header-container {
+    width: 100%;
+    text-align: left;
   }
+  
+  #app-name {
+    font-size: 30px;
+    font-weight: bold;
+    color: #C6A680;
+  }
+
+	#gallery-name {
+    padding-left: 5px;
+	}
 
   .image-container {
     display: inline-block;
@@ -36,34 +46,18 @@
   }
 
   .action-button {
-    padding: 12.5px;
-    background-color: #007bff;
-    color: #ddd;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 12.5px;
-    font-size: 20px;
+    padding: 10px;
+    margin-left: 5px;
   }
 
-  .action-button:hover {
-    background-color: #e3d8cf;
-  }
+	div.action-button {
+    height: 16px;
+	}
 
-  .action-button:disabled {
-    background-color: #765F41;
-    color: #817056;
-    cursor: not-allowed;
-  }
-
-  .version-id {
-    position: fixed;
-    bottom: 6.25px;
-    right: 6.25px;
-    font-size: 15px;
-    color: #817056;
-    z-index: 1000;
-  }
+	.selection-icon {
+    height: 16px;
+		width: 16px;
+	}
 
   #gallery img {
     width: 375px;
@@ -72,11 +66,18 @@
 </style>
 </head>
 <body>
-
+	<div id="header-container"><span id="app-name">pantr</span><span id="gallery-name">{{ gallery }}</span></div>
   <div class="action-buttons">
-    <button id="select-all" class="action-button">Select All</button>
-    <button id="deselect-all" class="action-button">Deselect All</button>
     <button id="download-selected" class="action-button" disabled>Download Selected</button>
+		<div id="download-selected" class="action-button" disabled>
+      <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2aWV3Qm94PSIwIDAgMTkgMTUiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTSA5LjQ3NiA3LjUwMyBMIDkuNDc2IDE0LjUwMyBNIDkuNDc2IDE0LjUwMyBMIDcuMjI2IDEyLjE3IE0gOS40NzYgMTQuNTAzIEwgMTEuNzI2IDEyLjE3IE0gNC4wNzYgMTMuMzM2IEMgMi4wODggMTMuMzM2IDAuNDc2IDExLjY5NSAwLjQ3NiA5LjY3IEMgMC40NzYgOC4wMDEgMS41NyA2LjU5MyAzLjA2OCA2LjE0OSBDIDMuMTMyIDYuMTMgMy4xNzYgNi4wNyAzLjE3NiA2LjAwMyBDIDMuMTc2IDIuOTY1IDUuNTk0IDAuNTAzIDguNTc2IDAuNTAzIEMgMTEuNTU4IDAuNTAzIDEzLjk3NiAyLjk2NSAxMy45NzYgNi4wMDMgQyAxMy45NzYgNi4wNjEgMTQuMDMgNi4xMDQgMTQuMDg1IDYuMDkyIEMgMTQuMzQgNi4wMzMgMTQuNjA0IDYuMDAzIDE0Ljg3NiA2LjAwMyBDIDE2Ljg2NCA2LjAwMyAxOC40NzYgNy42NDQgMTguNDc2IDkuNjcgQyAxOC40NzYgMTEuNjk1IDE2Ljg2NCAxMy4zMzYgMTQuODc2IDEzLjMzNiIgc3Ryb2tlPSIjZGRkIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" alt="Deselect all images" class="selection-icon">
+		</div>
+		<div id="deselect-all" class="action-button">
+      <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2aWV3Qm94PSIwIDAgMjAuMDc3IDIwLjA3NyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZyBpZD0i8J+UjS1Qcm9kdWN0LUljb25zIiBzdHJva2U9IiNkZGQiIHN0cm9rZS13aWR0aD0iMC4wNSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiB0cmFuc2Zvcm09Im1hdHJpeCgxLCAwLCAwLCAxLCAtMS45NjEzOTU5Nzg5Mjc2MTIzLCAtMS45NjEzOTY5MzI2MDE5Mjg3KSI+CiAgICA8ZyBpZD0iaWNfZmx1ZW50X3NlbGVjdF9hbGxfMjRfcmVndWxhciIgZmlsbD0iI2RkZCIgZmlsbC1ydWxlPSJub256ZXJvIj4KICAgICAgPHBhdGggZD0iTSAyMC40OTYgNS42MjcgQyAyMS4zNzIgNS45MzQgMjIgNi43NjkgMjIgNy43NSBMIDIyIDE3Ljc1IEMgMjIgMjAuMDk3IDIwLjA5NyAyMiAxNy43NSAyMiBMIDcuNzUgMjIgQyA2Ljc2OSAyMiA1LjkzNCAyMS4zNzIgNS42MjcgMjAuNDk2IEwgNy43MjQgMjAuNSBMIDE3Ljc1IDIwLjUgQyAxOS4yNjkgMjAuNSAyMC41IDE5LjI2OSAyMC41IDE3Ljc1IEwgMjAuNSA3Ljc1IEwgMjAuNDk2IDcuNjk5IEwgMjAuNDk2IDUuNjI3IFogTSAxNy4yNDcgMiBDIDE4LjQ4OSAyIDE5LjQ5NyAzLjAwNyAxOS40OTcgNC4yNSBMIDE5LjQ5NyAxNy4yNDcgQyAxOS40OTcgMTguNDg5IDE4LjQ4OSAxOS40OTcgMTcuMjQ3IDE5LjQ5NyBMIDQuMjUgMTkuNDk3IEMgMy4wMDcgMTkuNDk3IDIgMTguNDg5IDIgMTcuMjQ3IEwgMiA0LjI1IEMgMiAzLjAwNyAzLjAwNyAyIDQuMjUgMiBMIDE3LjI0NyAyIFogTSAxNy4yNDcgMy41IEwgNC4yNSAzLjUgQyAzLjgzNiAzLjUgMy41IDMuODM2IDMuNSA0LjI1IEwgMy41IDE3LjI0NyBDIDMuNSAxNy42NjEgMy44MzYgMTcuOTk3IDQuMjUgMTcuOTk3IEwgMTcuMjQ3IDE3Ljk5NyBDIDE3LjY2MSAxNy45OTcgMTcuOTk3IDE3LjY2MSAxNy45OTcgMTcuMjQ3IEwgMTcuOTk3IDQuMjUgQyAxNy45OTcgMy44MzYgMTcuNjYxIDMuNSAxNy4yNDcgMy41IFoiIGlkPSLwn46oLUNvbG9yIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4=" alt="Deselect all images" class="selection-icon">
+		</div>
+		<div id="select-all" class="action-button">
+      <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2aWV3Qm94PSIwIDAgMjAuMDc3IDIwLjA3NyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZyBpZD0i8J+UjS1Qcm9kdWN0LUljb25zIiBzdHJva2U9IiNkZGQiIHN0cm9rZS13aWR0aD0iMC4wNSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiB0cmFuc2Zvcm09Im1hdHJpeCgxLCAwLCAwLCAxLCAtMS45NjEzOTU5Nzg5Mjc2MTIzLCAtMS45NjEzOTY5MzI2MDE5Mjg3KSI+CiAgICA8ZyBpZD0iaWNfZmx1ZW50X3NlbGVjdF9hbGxfMjRfcmVndWxhciIgZmlsbD0iI2RkZCIgZmlsbC1ydWxlPSJub256ZXJvIj4KICAgICAgPHBhdGggZD0iTTIwLjQ5NjE3NjYsNS42MjY2ODE4MiBDMjEuMzcyMDY3NSw1LjkzNDQ3NzAyIDIyLDYuNzY4OTA3NzcgMjIsNy43NSBMMjIsMTcuNzUgQzIyLDIwLjA5NzIxMDIgMjAuMDk3MjEwMiwyMiAxNy43NSwyMiBMNy43NSwyMiBDNi43Njg5MDc3NywyMiA1LjkzNDQ3NzAyLDIxLjM3MjA2NzUgNS42MjY2ODE4MiwyMC40OTYxNzY2IEw3LjcyMzk2MTg4LDIwLjQ5OTU1NjUgTDE3Ljc1LDIwLjUgQzE5LjI2ODc4MzEsMjAuNSAyMC41LDE5LjI2ODc4MzEgMjAuNSwxNy43NSBMMjAuNSw3Ljc1IEwyMC40OTYwMTk0LDcuNjk5MDE5NDMgTDIwLjQ5NjE3NjYsNS42MjY2ODE4MiBaIE0xNy4yNDY4MTMsMiBDMTguNDg5NDUzNywyIDE5LjQ5NjgxMywzLjAwNzM1OTMxIDE5LjQ5NjgxMyw0LjI1IEwxOS40OTY4MTMsMTcuMjQ2ODEzIEMxOS40OTY4MTMsMTguNDg5NDUzNyAxOC40ODk0NTM3LDE5LjQ5NjgxMyAxNy4yNDY4MTMsMTkuNDk2ODEzIEw0LjI1LDE5LjQ5NjgxMyBDMy4wMDczNTkzMSwxOS40OTY4MTMgMiwxOC40ODk0NTM3IDIsMTcuMjQ2ODEzIEwyLDQuMjUgQzIsMy4wMDczNTkzMSAzLjAwNzM1OTMxLDIgNC4yNSwyIEwxNy4yNDY4MTMsMiBaIE0xNy4yNDY4MTMsMy41IEw0LjI1LDMuNSBDMy44MzU3ODY0NCwzLjUgMy41LDMuODM1Nzg2NDQgMy41LDQuMjUgTDMuNSwxNy4yNDY4MTMgQzMuNSwxNy42NjEwMjY2IDMuODM1Nzg2NDQsMTcuOTk2ODEzIDQuMjUsMTcuOTk2ODEzIEwxNy4yNDY4MTMsMTcuOTk2ODEzIEMxNy42NjEwMjY2LDE3Ljk5NjgxMyAxNy45OTY4MTMsMTcuNjYxMDI2NiAxNy45OTY4MTMsMTcuMjQ2ODEzIEwxNy45OTY4MTMsNC4yNSBDMTcuOTk2ODEzLDMuODM1Nzg2NDQgMTcuNjYxMDI2NiwzLjUgMTcuMjQ2ODEzLDMuNSBaIE05LjU4MTE0NTY0LDExLjM1ODE5NDIgTDEzLjQ2OTY2OTksNy40Njk2Njk5MSBDMTMuNzYyNTYzMSw3LjE3Njc3NjcgMTQuMjM3NDM2OSw3LjE3Njc3NjcgMTQuNTMwMzMwMSw3LjQ2OTY2OTkxIEMxNC43OTY1OTY2LDcuNzM1OTM2NDggMTQuODIwODAyNyw4LjE1MjYwMDE2IDE0LjYwMjk0ODIsOC40NDYyMTE2NSBMMTQuNTMwMzMwMSw4LjUzMDMzMDA5IEwxMC4wMzAzMzAxLDEzLjAzMDMzMDEgQzkuNzM0NDkyMzksMTMuMzI2MTY3OCA5LjI2MTM0MDI3LDEzLjMxODk0NzEgOC45NzM2MDM5NCwxMy4wMzQ0NDY0IEw4LjksMTIuOTUgTDcuNCwxMC45NSBDNy4xNTE0NzE4NiwxMC42MTg2MjkyIDcuMjE4NjI5MTUsMTAuMTQ4NTI4MSA3LjU1LDkuOSBDNy44NTEyNDYyMyw5LjY3NDA2NTMzIDguMjY3MTQ1NDgsOS43MDkwMjc3IDguNTI2OTk2NzYsOS45NjYyMTU1NSBMOC42LDEwLjA1IEw5LjU4MTE0NTY0LDExLjM1ODE5NDIgTDEzLjQ2OTY2OTksNy40Njk2Njk5MSBMOS41ODExNDU2NCwxMS4zNTgxOTQyIFoiIGlkPSLwn46oLUNvbG9yIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4=" alt="Select all images" class="selection-icon">
+		</div>
   </div>
 
   <div id="gallery">
@@ -133,10 +134,10 @@
       }
 
       const content = await zip.generateAsync({type: "blob"});
-      saveAs(content, "selected_images.zip");
+			saveAs(content, "{{ gallery }}_images.zip");
     });
   </script>
-  <div class="version-id">Version: {{ version_id }}</div>
+  <div class="version-id">version: {{ version_id }}</div>
 </body>
 </html>
 

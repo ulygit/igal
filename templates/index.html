@@ -3,194 +3,150 @@
   <head>
     <title>pantr - fast photo sharing</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #241d17;
-    color: #E3D8CF;
-    font-size: 20px;
-  }
-
-  h1 {
-    text-align: center;
-    font-size: 60px;
-    margin-bottom: 0px;
-    color: #C6A680;
-  }
-
-  h2 {
-    text-align: center;
-    font-size: 14px;
-    color: #817056;
-  }
-
-  form {
-    max-width: 625px;
-    margin: 0 auto;
-    padding: 25px;
-    border-radius: 5px;
-  }
-
-  input[type="text"] {
-    display: block;
-    width: 100%;
-    padding: 12.5px;
-    margin-bottom: 12.5px;
-    box-sizing: border-box;
-    font-size: 20px;
-    background-color: #765F41;
-    color: #E3D8CF;
-    border: 1px solid #817056;
-  }
-
-  input[type="submit"] {
-    display: block;
-    width: auto;
-    padding: 12.5px 25px;
-    margin: 20px auto 0;
-    font-size: 20px;
-    background-color: #007bff;
-    color: #DDD;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  input[type="submit"]:hover {
-    background-color: #E3D8CF;
-  }
-
-  input[type="submit"]:disabled {
-    background-color: #765F41;
-    color: #817056;
-    cursor: not-allowed;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 6.25px;
-    font-size: 20px;
-    color: #C6A680;
-  }
-
-  #progress, #error, #gallery-link {
-    margin-top: 25px;
-  }
-
-  .progress-item {
-    margin-bottom: 6.25px;
-  }
-
-  #error {
-    color: #C6A680;
-  }
-
-  #gallery-link {
-    font-weight: bold;
-  }
-
-  #gallery-link a {
-    color: #C6A680;
-  }
-
-  .version-id {
-    position: fixed;
-    bottom: 6.25px;
-    right: 6.25px;
-    font-size: 12px;
-    color: #817056;
-  }
-
-  input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-  }
-
-  .file-input-wrapper {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-    background-color: #765F41;
-    border: 2px dashed #C6A680;
-    border-radius: 5px;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .file-input-wrapper:hover {
-    background-color: #817056;
-  }
-
-  .file-input-wrapper input[type=file] {
-    font-size: 100px;
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-    cursor: pointer;
-  }
-
-  .file-input-icon {
-    width: 64px;
-    height: 64px;
-    margin-bottom: 10px;
-  }
-
-  .file-input-text {
-    font-size: 18px;
-    color: #E3D8CF;
-  }
-
-.selected-images {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-.selected-image-thumbnail {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  margin: 5px;
-  border: 2px solid #C6A680;
-}
-
-.additional-images-count {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  background-color: #C6A680;
-  color: #334E60;
-  font-weight: bold;
-  margin: 5px;
-  border-radius: 5px;
-}
-
-  @media (max-width: 480px) {
-    form {
-      padding: 12.5px;
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}" type="text/css">
+    <style>
+      form {
+        max-width: 625px;
+        margin: 0 auto;
+        padding: 25px;
+        border-radius: 5px;
+      }
+    
+      input[type="text"] {
+        display: block;
+        width: 100%;
+        padding: 12.5px;
+        margin-bottom: 12.5px;
+        box-sizing: border-box;
+        font-size: 20px;
+        background-color: #765F41;
+        color: #E3D8CF;
+        border: 1px solid #817056;
+      }
+    
+      input[type="text"]:focus-within {
+        outline: 2px solid #334e60;
+      }
+    
+      input[type="submit"] {
+        display: block;
+        width: auto;
+        padding: 12.5px 25px;
+        margin: 20px auto 0;
+      }
+    
+      label {
+        display: block;
+        margin-bottom: 6.25px;
+        font-size: 20px;
+        color: #C6A680;
+      }
+    
+      #progress, #error, #gallery-link {
+        margin-top: 25px;
+      }
+    
+      .progress-item {
+        margin-bottom: 6.25px;
+      }
+    
+      #error {
+        color: #C6A680;
+      }
+    
+      #gallery-link {
+        font-weight: bold;
+      }
+    
+      #gallery-link a {
+        color: #C6A680;
+      }
+    
+      .file-input-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        background-color: #765F41;
+        border: 2px dashed #C6A680;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        width: 100%;
+        box-sizing: border-box;
+      }
+    
+      .file-input-wrapper:hover {
+        background-color: #817056;
+      }
+    
+      .file-input-wrapper input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+    
+      .file-input-icon {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 10px;
+      }
+    
+      .file-input-text {
+        font-size: 18px;
+        color: #E3D8CF;
+      }
+    
+    .selected-images {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
     }
-
-    input[type="text"], input[type="submit"] {
-      font-size: 17.5px;
+    
+    .selected-image-thumbnail {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      margin: 5px;
+      border: 2px solid #C6A680;
     }
-
-    label {
-      font-size: 17.5px;
+    
+    .additional-images-count {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      background-color: #C6A680;
+      color: #334E60;
+      font-weight: bold;
+      margin: 5px;
+      border-radius: 5px;
     }
-
-    .file-input-text {
-      font-size: 16px;
-    }
-  }
-</style>
+    
+      @media (max-width: 480px) {
+        form {
+          padding: 12.5px;
+        }
+    
+        input[type="text"], input[type="submit"] {
+          font-size: 17.5px;
+        }
+    
+        label {
+          font-size: 17.5px;
+        }
+    
+        .file-input-text {
+          font-size: 16px;
+        }
+      }
+    </style>
     <script>
       async function checkGallery(gallery) {
         const response = await fetch(`/check_gallery/${gallery}`);
@@ -336,12 +292,12 @@
     </script>
   </head>
   <body>
-		<h1>pantr</h1>
-		<h2>fast photo sharing</h2>
+    <h1>pantr</h1>
+    <h2>fast photo sharing</h2>
     <form onsubmit="uploadFiles(event)">
       <div class="file-input-wrapper">
         <input type="file" id="file-input" name="photos" accept="image/*" multiple required>
-        <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPgo8c3ZnIGhlaWdodD0iODAwcHgiIHdpZHRoPSI4MDBweCIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiAKCSB2aWV3Qm94PSIwIDAgMTg0LjY5IDE4NC42OSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPGc+CgkJPGc+CgkJCTxwYXRoIHN0eWxlPSJmaWxsOiMwMDdiZmY7IiBkPSJNMTQ5Ljk2OCw1MC4xODZjLTguMDE3LTE0LjMwOC0yMy43OTYtMjIuNTE1LTQwLjcxNy0xOS44MTMKCQkJCUMxMDIuNjA5LDE2LjQzLDg4LjcxMyw3LjU3Niw3My4wODcsNy41NzZjLTIyLjExNywwLTQwLjExMiwxNy45OTQtNDAuMTEyLDQwLjExNWMwLDAuOTEzLDAuMDM2LDEuODU0LDAuMTE4LDIuODM0CgkJCQlDMTQuMDA0LDU0Ljg3NSwwLDcyLjExLDAsOTEuOTU5YzAsMjMuNDU2LDE5LjA4Miw0Mi41MzUsNDIuNTM4LDQyLjUzNWgzMy42MjN2LTcuMDI1SDQyLjUzOAoJCQkJYy0xOS41ODMsMC0zNS41MDktMTUuOTI5LTM1LjUwOS0zNS41MDljMC0xNy41MjYsMTMuMDg0LTMyLjYyMSwzMC40NDItMzUuMTA1YzAuOTMxLTAuMTMyLDEuNzY4LTAuNjMzLDIuMzI2LTEuMzkyCgkJCQljMC41NTUtMC43NTUsMC43OTUtMS43MDQsMC42NDQtMi42M2MtMC4yOTctMS45MDQtMC40NDctMy41ODItMC40NDctNS4xMzljMC0xOC4yNDksMTQuODUyLTMzLjA5NCwzMy4wOTQtMzMuMDk0CgkJCQljMTMuNzAzLDAsMjUuNzg5LDguMjYsMzAuODAzLDIxLjA0YzAuNjMsMS42MjEsMi4zNTEsMi41MzQsNC4wNTgsMi4xNGMxNS40MjUtMy41NjgsMjkuOTE5LDMuODgzLDM2LjYwNCwxNy4xNjgKCQkJCWMwLjUwOCwxLjAyNywxLjUwMywxLjczNiwyLjY0MSwxLjg5N2MxNy4zNjgsMi40NzMsMzAuNDgxLDE3LjU2OSwzMC40ODEsMzUuMTEyYzAsMTkuNTgtMTUuOTM3LDM1LjUwOS0zNS41MiwzNS41MDlIOTcuMzkxCgkJCQl2Ny4wMjVoNDQuNzYxYzIzLjQ1OSwwLDQyLjUzOC0xOS4wNzksNDIuNTM4LTQyLjUzNUMxODQuNjksNzEuNTQ1LDE2OS44ODQsNTMuOTAxLDE0OS45NjgsNTAuMTg2eiIvPgoJCTwvZz4KCQk8Zz4KCQkJPHBhdGggc3R5bGU9ImZpbGw6IzAwN2JmZjsiIGQ9Ik0xMDguNTg2LDkwLjIwMWMxLjQwNi0xLjQwMywxLjQwNi0zLjY3MiwwLTUuMDc1TDg4LjU0MSw2NS4wNzgKCQkJCWMtMC43MDEtMC42OTgtMS42MTQtMS4wNDUtMi41MzQtMS4wNDVsLTAuMDY0LDAuMDExYy0wLjAxOCwwLTAuMDM2LTAuMDExLTAuMDU0LTAuMDExYy0wLjkzMSwwLTEuODUsMC4zNjEtMi41MzQsMS4wNDUKCQkJCUw2My4zMSw4NS4xMjdjLTEuNDAzLDEuNDAzLTEuNDAzLDMuNjcyLDAsNS4wNzVjMS40MDMsMS40MDYsMy42NzIsMS40MDYsNS4wNzUsMEw4Mi4yOTYsNzYuMjl2OTcuMjI3CgkJCQljMCwxLjk5LDEuNjAzLDMuNTk3LDMuNTkzLDMuNTk3YzEuOTc5LDAsMy41OS0xLjYwNywzLjU5LTMuNTk3Vjc2LjE2NWwxNC4wMzMsMTQuMDM2CgkJCQlDMTA0LjkxLDkxLjYwOCwxMDcuMTgzLDkxLjYwOCwxMDguNTg2LDkwLjIwMXoiLz4KCQk8L2c+Cgk8L2c+CjwvZz4KPC9zdmc+Cg==" alt="Upload icon" class="file-input-icon">
+        <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2aWV3Qm94PSIwIDAgMTkgMTUiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTSA5LjUwNyAxNC41IEwgOS41MDcgNy41IE0gOS41MDcgNy41IEwgNy4yNTcgOS44MzQgTSA5LjUwNyA3LjUgTCAxMS43NTcgOS44MzQgTSA0LjEwNyAxMy4zMzQgQyAyLjExOSAxMy4zMzQgMC41MDcgMTEuNjkyIDAuNTA3IDkuNjY3IEMgMC41MDcgNy45OTggMS42MDEgNi41OSAzLjA5OSA2LjE0NiBDIDMuMTYzIDYuMTI3IDMuMjA3IDYuMDY4IDMuMjA3IDYgQyAzLjIwNyAyLjk2MyA1LjYyNSAwLjUgOC42MDcgMC41IEMgMTEuNTg5IDAuNSAxNC4wMDcgMi45NjMgMTQuMDA3IDYgQyAxNC4wMDcgNi4wNTkgMTQuMDYxIDYuMTAyIDE0LjExNiA2LjA4OSBDIDE0LjM3MSA2LjAzMSAxNC42MzUgNiAxNC45MDcgNiBDIDE2Ljg5NSA2IDE4LjUwNyA3LjY0MiAxOC41MDcgOS42NjcgQyAxOC41MDcgMTEuNjkyIDE2Ljg5NSAxMy4zMzQgMTQuOTA3IDEzLjMzNCIgc3Ryb2tlPSIjMzM0ZTYwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHRyYW5zZm9ybT0ibWF0cml4KDEsIDAsIDAsIDEsIDAsIC0xLjc3NjM1NjgzOTQwMDI1MDVlLTE1KSIvPgo8L3N2Zz4K" alt="Upload icon" class="file-input-icon">
         <div class="file-input-text">Click to choose files</div>
         <div id="selected-images" class="selected-images"></div>
       </div>
@@ -372,7 +328,7 @@
           const thumbnailSize = 74; // 60px + 5px margin on each side + 2px border on each side
           const containerWidth = selectedImagesDiv.offsetWidth;
           const maxThumbnails = Math.floor(containerWidth / thumbnailSize);
-					const imagesToDisplay = files.length <= maxThumbnails ? files.length : maxThumbnails - 1;
+          const imagesToDisplay = files.length <= maxThumbnails ? files.length : maxThumbnails - 1;
 
           for (let i = 0; i < imagesToDisplay; i++) {
             const file = files[i];
@@ -399,6 +355,9 @@
 
       document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('file-input').addEventListener('change', handleFileSelect);
+        document.getElementById('selected-images').addEventListener('click', function(){
+          document.getElementById('file-input').click()
+        });
       });
   </script>
 </html>
