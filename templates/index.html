@@ -40,19 +40,20 @@
         display: block;
         margin-bottom: 6.25px;
         font-size: 20px;
-        color: #C6A680;
+        color: #c6a680;
+      }
+
+      #status-container {
+        padding: 12.5px;
+        visibility: hidden;
+        font-size: 20px;
+        background-color: #765F41;
+        color: #e3d8cf;
+        border: 1px solid #817056;
       }
     
       #progress, #error, #gallery-link {
-        margin-top: 25px;
-      }
-    
-      .progress-item {
-        margin-bottom: 6.25px;
-      }
-    
-      #error {
-        color: #C6A680;
+        font-size: 20px;
       }
     
       #gallery-link {
@@ -60,7 +61,9 @@
       }
     
       #gallery-link a {
-        color: #C6A680;
+        font-size: 20px;
+        color: #c6a680;
+        
       }
     
       .file-input-wrapper {
@@ -157,6 +160,7 @@
         event.preventDefault();
         const formData = new FormData(event.target);
         const uploadButton = document.getElementById('upload-button');
+        const statusDiv = document.getElementById('status-container');
         const progressDiv = document.getElementById('progress');
         const errorDiv = document.getElementById('error');
         const galleryLinkDiv = document.getElementById('gallery-link');
@@ -180,6 +184,7 @@
         }
 
         uploadButton.disabled = true;
+        statusDiv.style.visibility = "visible";
         progressDiv.textContent = 'Uploading...';
 
         const fileInput = document.getElementById('file-input');
@@ -310,12 +315,17 @@
       <label for="gallery">Gallery name (required):</label>
       <input type="text" id="gallery" name="gallery" required>
       <br>
+      <div id="status-container">
+        <div id="error"></div>
+        <div id="progress"></div>
+        <div id="gallery-link"></div>
+      </div>
       <input type="submit" id="upload-button" value="Upload">
     </form>
-    <div id="error"></div>
-    <div id="progress"></div>
-    <div id="gallery-link"></div>
-    <div class="version-id">version: {{ version_id }}</div>
+      <div class="tooltip">
+        <img src="{{ url_for('static', filename='info.svg') }}" alt="info" class="icon">
+        <span class="tooltiptext">version: {{ version_id }}</span>
+    	</div>
   </body>
 
   <script>
